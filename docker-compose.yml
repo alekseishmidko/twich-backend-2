@@ -1,16 +1,29 @@
 version: '3.7'
 
 services:
-  'twitch-db':
+  'twitch-db': # Имя сервиса (можно использовать в ссылках из других контейнеров)
       container_name: 'postgres'
       image: postgres:15.2
       restart: always
       environment:
         - POSTGRES_USER=${POSTGRES_USER}
         - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DATABASE=${POSTGRES_DATABASE}
       ports:
+#        внешний/внутренние порты
         - 6432:5432
       volumes:
         - postgres_data:/var/lib/postgresql/data
+        # Монтирует именованный том postgres_data в стандартную директорию PostgreSQL для хранения данных
+        # Это позволяет сохранять данные даже при удалении контейнера
       networks:
         - twitch-backend
+
+
+volumes:
+  postgres_data: # Определение именованного тома, используемого выше для хранения данных PostgreSQL
+#  redis_data:
+
+networks:
+  twitch-backend:  # Создание пользовательской сети, к которой можно подключать другие контейнеры
+  # Обеспечивает изоляцию и удобную коммуникацию по имени сервиса (например, 'twitch-db')
