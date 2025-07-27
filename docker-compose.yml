@@ -19,10 +19,32 @@ services:
       networks:
         - twitch-backend
 
+  redis:
+    container_name: redis
+    image: redis:5.0
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    networks:
+      - twitch-backend
+
+  redis-insight:
+    container_name: redis-insight
+    image: redislabs/redisinsight:latest
+    ports:
+      - '8002:8002'
+    networks:
+      - twitch-backend
+    depends_on:
+      - redis
+    restart: always
 
 volumes:
   postgres_data: # Определение именованного тома, используемого выше для хранения данных PostgreSQL
-#  redis_data:
+  redis_data:
 
 networks:
   twitch-backend:  # Создание пользовательской сети, к которой можно подключать другие контейнеры
