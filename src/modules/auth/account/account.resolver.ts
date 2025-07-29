@@ -1,4 +1,5 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+
 import { AccountService } from './account.service';
 
 import { UserModel } from '@/src/modules/auth/account/models/user.model';
