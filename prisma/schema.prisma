@@ -18,19 +18,19 @@ model User {
   username    String @unique
   displayName String @map("display_name")
 
-  avatar String?
-  bio    String?
+  // avatar String?
+  // bio    String?
 
-  telegramId String? @unique @map("telegram_id")
-
-  isVerified Boolean @default(false) @map("is_verified")
-
-  isEmailVerified Boolean @default(false) @map("is_email_verified")
-  isTotpEnabled   Boolean @default(false) @map("is_totp_enabled")
-  totpSecret      String? @map("totp_secret")
-
-  isDeactivated Boolean   @default(false) @map("is_deactivated")
-  deactivatedAt DateTime? @map("deactivated_at")
+  // telegramId String? @unique @map("telegram_id")
+  //
+  // isVerified Boolean @default(false) @map("is_verified")
+  //
+  // isEmailVerified Boolean @default(false) @map("is_email_verified")
+  // isTotpEnabled   Boolean @default(false) @map("is_totp_enabled")
+  // totpSecret      String? @map("totp_secret")
+  //
+  // isDeactivated Boolean   @default(false) @map("is_deactivated")
+  // deactivatedAt DateTime? @map("deactivated_at")
 
   // tokens               Token[]
   // socialLinks          SocialLink[]
