@@ -1,4 +1,3 @@
-
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PrismaService } from '@/src/core/prisma/prisma.service';
 import { CreateUserInput } from '@/src/modules/auth/account/inputs/create-user.input';
@@ -56,7 +55,7 @@ export class AccountService {
 
     // await this.verificationService.sendVerificationToken(user);
 
-    // return true;
-    return user;
+    return true;
+    // return user;
   }
 }
