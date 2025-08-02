@@ -18,8 +18,10 @@ model User {
   username    String @unique
   displayName String @map("display_name")
 
-  // avatar String?
-  // bio    String?
+  avatar String?
+  bio    String?
+
+  isDeactivated Boolean   @default(false) @map("is_deactivated")
 
   // telegramId String? @unique @map("telegram_id")
   //
@@ -29,7 +31,7 @@ model User {
   // isTotpEnabled   Boolean @default(false) @map("is_totp_enabled")
   // totpSecret      String? @map("totp_secret")
   //
-  // isDeactivated Boolean   @default(false) @map("is_deactivated")
+
   // deactivatedAt DateTime? @map("deactivated_at")
 
   // tokens               Token[]

@@ -9,8 +9,19 @@ export class AccountService {
     private readonly prismaService: PrismaService, // private readonly verificationService: VerificationService,
   ) {}
 
-  public async findAll() {
-    return this.prismaService.user.findMany();
+  public async me(id: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+      // include: {
+      //   socialLinks: true,
+      //   stream: true,
+      //   notificationSettings: true,
+      // },
+    });
+
+    return user;
   }
 
   public async create(input: CreateUserInput) {
