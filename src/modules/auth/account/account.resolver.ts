@@ -4,14 +4,17 @@ import { AccountService } from './account.service';
 
 import { UserModel } from '@/src/modules/auth/account/models/user.model';
 import { CreateUserInput } from '@/src/modules/auth/account/inputs/create-user.input';
+import { Authorized } from '@/src/shared/decorators/authorized.decorator';
+import { Authorization } from '@/src/shared/decorators/auth.decorator';
 
 @Resolver('Account')
 export class AccountResolver {
   constructor(private readonly accountService: AccountService) {}
 
-  @Query(() => [UserModel], { name: 'getAllUsers' })
-  public async findAll() {
-    return this.accountService.findAll();
+  @Authorization()
+  @Query(() => UserModel, { name: 'findProfile' })
+  public async me(@Authorized('id') id: string) {
+    return this.accountService.me(id);
   }
 
   @Mutation(() => Boolean, { name: 'createUser' })
