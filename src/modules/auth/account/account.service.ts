@@ -3,6 +3,7 @@ import { PrismaService } from '@/src/core/prisma/prisma.service';
 import { CreateUserInput } from '@/src/modules/auth/account/inputs/create-user.input';
 import { hash } from 'argon2';
 import { VerificationService } from '@/src/modules/auth/verification/verification.service';
+import { IS_DEV_ENV } from '@/src/shared/utils/is-dev.util';
 
 @Injectable()
 export class AccountService {
@@ -66,9 +67,10 @@ export class AccountService {
       },
     });
 
-    await this.verificationService.sendVerificationToken(user);
+    if (!IS_DEV_ENV) {
+      await this.verificationService.sendVerificationToken(user);
+    }
 
     return true;
-    // return user;
   }
 }

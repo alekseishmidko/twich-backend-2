@@ -15,6 +15,7 @@ import { RedisService } from '@/src/core/redis/redis.service';
 import { destroySession, saveSession } from '@/src/shared/utils/session.util';
 import { VerificationService } from '@/src/modules/auth/verification/verification.service';
 import { TOTP } from 'otpauth';
+import { IS_DEV_ENV } from '@/src/shared/utils/is-dev.util';
 
 @Injectable()
 export class SessionService {
@@ -88,33 +89,35 @@ export class SessionService {
       throw new UnauthorizedException('Неверный пароль');
     }
 
-    if (!user.isEmailVerified) {
-      await this.verificationService.sendVerificationToken(user);
-      throw new BadRequestException(
-        'Аккаунт не верифицирован, пожалуйста проверьте почту для подтверждения',
-      );
-    }
-    // if (user.isTotpEnabled) {
-    //   if (!pin) {
-    //     return {
-    //       message: 'Необходим код для завершения авторизации',
-    //     };
-    //   }
-    //
-    //   const totp = new TOTP({
-    //     issuer: 'TeaStream',
-    //     label: `${user.email}`,
-    //     algorithm: 'SHA1',
-    //     digits: 6,
-    //     secret: user.totpSecret,
-    //   });
-    //
-    //   const delta = totp.validate({ token: pin });
-    //
-    //   if (delta === null) {
-    //     throw new BadRequestException('Неверный код');
-    //   }
+    // if (!user.isEmailVerified) {
+    //   await this.verificationService.sendVerificationToken(user);
+    //   throw new BadRequestException(
+    //     'Аккаунт не верифицирован, пожалуйста проверьте почту для подтверждения',
+    //   );
     // }
+    if (user.isTotpEnabled) {
+      if (!pin) {
+        return {
+          message: 'Необходим код для завершения авторизации',
+        };
+      }
+
+      const totp = new TOTP({
+        issuer: 'TeaStream',
+        label: `${user.email}`,
+        algorithm: 'SHA1',
+        digits: 6,
+        secret: user.totpSecret,
+      });
+
+      if (!IS_DEV_ENV) {
+        const delta = totp.validate({ token: pin });
+
+        if (delta === null) {
+          throw new BadRequestException('Неверный код');
+        }
+      }
+    }
 
     const metadata = getSessionMetadata(req, userAgent);
     return saveSession(req, user, metadata);
