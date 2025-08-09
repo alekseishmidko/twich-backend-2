@@ -22,7 +22,7 @@ model User {
   bio    String?
 
   isDeactivated Boolean   @default(false) @map("is_deactivated")
-
+  deactivatedAt DateTime? @map("deactivated_at")
   // telegramId String? @unique @map("telegram_id")
   //
   isVerified Boolean @default(false) @map("is_verified")
@@ -32,7 +32,7 @@ model User {
   totpSecret      String? @map("totp_secret")
   //
 
-  // deactivatedAt DateTime? @map("deactivated_at")
+
 
  tokens               Token[]
   // socialLinks          SocialLink[]

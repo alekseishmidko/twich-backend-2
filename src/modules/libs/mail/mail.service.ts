@@ -49,7 +49,7 @@ export class MailService {
     return this.sendMail(email, 'Деактивация аккаунта', html);
   }
 
-  public async sendAcccountDeletion(email: string) {
+  public async sendAccountDeletion(email: string) {
     const domain = this.configService.getOrThrow<string>('ALLOWED_ORIGIN');
     const html = await render(AccountDeletionTemplate({ domain }));
 
