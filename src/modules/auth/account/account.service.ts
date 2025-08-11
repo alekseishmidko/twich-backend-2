@@ -24,11 +24,11 @@ export class AccountService {
       where: {
         id,
       },
-      // include: {
-      //   socialLinks: true,
-      //   stream: true,
-      //   notificationSettings: true,
-      // },
+      include: {
+        socialLinks: true,
+        // stream: true,
+        // notificationSettings: true,
+      },
     });
 
     return user;
