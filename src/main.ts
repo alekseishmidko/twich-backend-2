@@ -6,13 +6,17 @@ import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
 import { RedisStore } from 'connect-redis';
 import { parseBoolean } from '@/src/shared/utils/parse-boolean.util';
-import { ms, StringValue } from '@/src/shared/utils/ms.util';
+import type { StringValue } from '@/src/shared/utils/ms.util';
+import { ms } from '@/src/shared/utils/ms.util';
+import * as graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 import { RedisService } from '@/src/core/redis/redis.service';
 async function bootstrap() {
   const app = await NestFactory.create(CoreModule);
   const config = app.get(ConfigService);
   const redis = app.get(RedisService);
+
   app.use(cookieParser(config.getOrThrow<string>('COOKIES_SECRET')));
+  app.use(config.getOrThrow<string>('GRAPHQL_PREFIX'), graphqlUploadExpress());
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.use(
     session({

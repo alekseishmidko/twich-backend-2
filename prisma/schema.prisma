@@ -24,18 +24,18 @@ model User {
   isDeactivated Boolean   @default(false) @map("is_deactivated")
   deactivatedAt DateTime? @map("deactivated_at")
   // telegramId String? @unique @map("telegram_id")
-  //
+
   isVerified Boolean @default(false) @map("is_verified")
-  //
+
   isEmailVerified Boolean @default(false) @map("is_email_verified")
   isTotpEnabled   Boolean @default(false) @map("is_totp_enabled")
   totpSecret      String? @map("totp_secret")
-  //
 
 
 
- tokens               Token[]
-  // socialLinks          SocialLink[]
+
+  tokens               Token[]
+  socialLinks          SocialLink[]
   // stream               Stream?
   // chatMessages         ChatMessage[]
   // notifications        Notification[]
@@ -78,4 +78,20 @@ enum TokenType {
   TELEGRAM_AUTH
 
   @@map("token_types")
+}
+
+model SocialLink {
+  id String @id @default(uuid())
+
+  title    String
+  url      String
+  position Int
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String? @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("social_links")
 }
