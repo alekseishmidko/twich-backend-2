@@ -26,7 +26,7 @@ export class AccountService {
       },
       include: {
         socialLinks: true,
-        // stream: true,
+        stream: true,
         // notificationSettings: true,
       },
     });
@@ -63,20 +63,18 @@ export class AccountService {
         email,
         password: await hash(password),
         displayName: username,
-        // stream: {
-        //   create: {
-        //     title: `Стрим ${username}`,
-        //   },
-        // },
+        stream: {
+          create: {
+            title: `Стрим ${username}`,
+          },
+        },
         // notificationSettings: {
         //   create: {},
         // },
       },
     });
 
-    if (!IS_DEV_ENV) {
-      await this.verificationService.sendVerificationToken(user);
-    }
+    await this.verificationService.sendVerificationToken(user);
 
     return true;
   }
