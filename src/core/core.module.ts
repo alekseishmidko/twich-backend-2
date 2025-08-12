@@ -16,6 +16,7 @@ import { DeactivateModule } from '@/src/modules/auth/deactivate/deactivate.modul
 import { CronModule } from '@/src/modules/cron/cron.module';
 import { StorageModule } from '@/src/modules/libs/storage/storage.module';
 import { ProfileModule } from '@/src/modules/auth/profile/profile.module';
+import { StreamModule } from '@/src/modules/stream/stream.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { ProfileModule } from '@/src/modules/auth/profile/profile.module';
     RedisModule,
     CronModule,
     StorageModule,
+    StreamModule,
     // auth
     AccountModule,
     SessionModule,

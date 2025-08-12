@@ -14,6 +14,7 @@ import { MailService } from '../../libs/mail/mail.service';
 import { VerificationInput } from '@/src/modules/auth/verification/inputs/verification.input';
 import { saveSession } from '@/src/shared/utils/session.util';
 import { generateToken } from '@/src/shared/utils/generate-token';
+import { IS_DEV_ENV } from '@/src/shared/utils/is-dev.util';
 
 @Injectable()
 export class VerificationService {
@@ -73,11 +74,13 @@ export class VerificationService {
       user,
       TokenType.EMAIL_VERIFY,
     );
-
-    await this.mailService.sendVerificationToken(
-      user.email,
-      verificationToken.token,
-    );
+    //скипаю отправку почты
+    if (!IS_DEV_ENV) {
+      await this.mailService.sendVerificationToken(
+        user.email,
+        verificationToken.token,
+      );
+    }
 
     return true;
   }
