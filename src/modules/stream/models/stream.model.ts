@@ -3,6 +3,7 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 import type { Stream } from '@/prisma/generated';
 
 import { UserModel } from '../../auth/account/models/user.model';
+import { CategoryModel } from '@/src/modules/category/models/category.model';
 // import { CategoryModel } from '../../category/models/category.model';
 // import { ChatMessageModel } from '../../chat/models/chat-message.model';
 
@@ -44,8 +45,8 @@ export class StreamModel implements Stream {
   @Field(() => String)
   public userId: string;
 
-  // @Field(() => CategoryModel, { nullable: true })
-  // public category: CategoryModel;
+  @Field(() => CategoryModel, { nullable: true })
+  public category: CategoryModel;
 
   @Field(() => String, { nullable: true })
   public categoryId: string;
