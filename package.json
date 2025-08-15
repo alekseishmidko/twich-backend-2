@@ -24,7 +24,8 @@
     "db:reset:push": "prisma db push --force-reset",
     "db:reset:migrate": "prisma migrate reset --force --skip-seed",
     "studio": "npx prisma studio",
-    "graphql:playground": "open http://localhost:7676/graphql"
+    "graphql:playground": "open http://localhost:7676/graphql",
+    "db:seed": "ts-node src/core/prisma/prisma.seed.ts"
   },
   "dependencies": {
     "@apollo/server": "4.12.2",
@@ -49,6 +50,7 @@
     "express-session": "1.18.2",
     "geoip-lite": "1.4.10",
     "graphql": "16.11.0",
+    "graphql-subscriptions": "^3.0.0",
     "graphql-upload": "14.0.0",
     "hi-base32": "0.5.1",
     "i18n-iso-countries": "7.14.0",
