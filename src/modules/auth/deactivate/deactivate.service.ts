@@ -10,7 +10,7 @@ import type { Request } from 'express';
 import { TokenType, type User } from '@/prisma/generated';
 import { PrismaService } from '@/src/core/prisma/prisma.service';
 import { RedisService } from '@/src/core/redis/redis.service';
-// import { generateToken } from '@/src/shared/utils/generate-token.util';
+
 import { getSessionMetadata } from '@/src/shared/utils/session-metadata.util';
 import { destroySession } from '@/src/shared/utils/session.util';
 

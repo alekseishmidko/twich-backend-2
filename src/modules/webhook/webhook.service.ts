@@ -6,18 +6,16 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '@/src/core/prisma/prisma.service';
 
 import { LivekitService } from '../libs/livekit/livekit.service';
-// import { StripeService } from '../libs/stripe/stripe.service';
-// import { TelegramService } from '../libs/telegram/telegram.service';
-// import { NotificationService } from '../notification/notification.service';
+import { NotificationService } from '@/src/modules/notification/notification.service';
 
 @Injectable()
 export class WebhookService {
   public constructor(
     private readonly prismaService: PrismaService,
     private readonly configService: ConfigService,
+    private readonly notificationService: NotificationService,
     private readonly livekitService: LivekitService, // private readonly stripeService: StripeService,
-    // private readonly telegramService: TelegramService,
-  ) // private readonly notificationService: NotificationService,
+  ) // private readonly telegramService: TelegramService,
   {}
 
   public async receiveWebhookLivekit(body: string, authorization: string) {
@@ -39,22 +37,22 @@ export class WebhookService {
           user: true,
         },
       });
-      console.log('started');
-      // const followers = await this.prismaService.follow.findMany({
-      //   where: {
-      //     followingId: stream.user.id,
-      //     follower: {
-      //       isDeactivated: false,
-      //     },
-      //   },
-      //   include: {
-      //     follower: {
-      //       include: {
-      //         notificationSettings: true,
-      //       },
-      //     },
-      //   },
-      // });
+
+      const followers = await this.prismaService.follow.findMany({
+        where: {
+          followingId: stream.user.id,
+          follower: {
+            isDeactivated: false,
+          },
+        },
+        include: {
+          follower: {
+            include: {
+              notificationSettings: true,
+            },
+          },
+        },
+      });
 
       // for (const follow of followers) {
       //   const follower = follow.follower;
@@ -79,7 +77,6 @@ export class WebhookService {
     }
 
     if (event.event === 'ingress_ended') {
-      console.log('end');
       const stream = await this.prismaService.stream.update({
         where: {
           ingressId: event.ingressInfo.ingressId,
@@ -89,11 +86,11 @@ export class WebhookService {
         },
       });
 
-      // await this.prismaService.chatMessage.deleteMany({
-      //   where: {
-      //     streamId: stream.id,
-      //   },
-      // });
+      await this.prismaService.chatMessage.deleteMany({
+        where: {
+          streamId: stream.id,
+        },
+      });
     }
   }
 
