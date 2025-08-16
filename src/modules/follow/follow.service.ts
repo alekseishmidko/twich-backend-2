@@ -82,11 +82,11 @@ export class FollowService {
       },
       include: {
         follower: true,
-        // following: {
-        //   include: {
-        //     notificationSettings: true,
-        //   },
-        // },
+        following: {
+          include: {
+            notificationSettings: true,
+          },
+        },
       },
     });
 

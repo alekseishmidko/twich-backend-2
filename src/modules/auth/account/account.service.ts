@@ -7,7 +7,7 @@ import { PrismaService } from '@/src/core/prisma/prisma.service';
 import { CreateUserInput } from '@/src/modules/auth/account/inputs/create-user.input';
 import { hash, verify } from 'argon2';
 import { VerificationService } from '@/src/modules/auth/verification/verification.service';
-import { IS_DEV_ENV } from '@/src/shared/utils/is-dev.util';
+
 import { ChangeEmailInput } from '@/src/modules/auth/account/inputs/change-email.input';
 import type { User } from '@prisma/generated';
 import { ChangePasswordInput } from '@/src/modules/auth/account/inputs/change-password.input';
@@ -27,7 +27,7 @@ export class AccountService {
       include: {
         socialLinks: true,
         stream: true,
-        // notificationSettings: true,
+        notificationSettings: true,
       },
     });
 
@@ -68,9 +68,9 @@ export class AccountService {
             title: `Стрим ${username}`,
           },
         },
-        // notificationSettings: {
-        //   create: {},
-        // },
+        notificationSettings: {
+          create: {},
+        },
       },
     });
 
