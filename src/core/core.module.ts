@@ -23,6 +23,8 @@ import { IngressModule } from '@/src/modules/stream/ingress/ingress.module';
 import { WebhookModule } from '@/src/modules/webhook/webhook.module';
 import { CategoryModule } from '@/src/modules/category/category.module';
 import { ChatModule } from '@/src/modules/chat/chat.module';
+import { FollowModule } from '@/src/modules/follow/follow.module';
+import { ChannelModule } from '@/src/modules/channel/channel.module';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { ChatModule } from '@/src/modules/chat/chat.module';
     WebhookModule,
     CategoryModule,
     ChatModule,
+    FollowModule,
+    ChannelModule,
     LivekitModule.registerAsync({
       imports: [ConfigModule],
       useFactory: getLiveKitConfig,
