@@ -15,7 +15,7 @@ import { getSessionMetadata } from '@/src/shared/utils/session-metadata.util';
 import { destroySession } from '@/src/shared/utils/session.util';
 
 import { MailService } from '../../libs/mail/mail.service';
-// import { TelegramService } from '../../libs/telegram/telegram.service';
+import { TelegramService } from '../../libs/telegram/telegram.service';
 
 import { DeactivateAccountInput } from './inputs/deactivate-account.input';
 import { generateToken } from '@/src/shared/utils/generate-token';
@@ -27,7 +27,8 @@ export class DeactivateService {
     private readonly prismaService: PrismaService,
     private readonly redisService: RedisService,
     private readonly configService: ConfigService,
-    private readonly mailSerivce: MailService, // private readonly telegramService: TelegramService,
+    private readonly mailService: MailService,
+    private readonly telegramService: TelegramService,
   ) {}
 
   public async deactivate(
@@ -114,23 +115,23 @@ export class DeactivateService {
     const metadata = getSessionMetadata(req, userAgent);
 
     if (!IS_DEV_ENV) {
-      await this.mailSerivce.sendDeactivateToken(
+      await this.mailService.sendDeactivateToken(
         user.email,
         deactivateToken.token,
         metadata,
       );
     }
 
-    // if (
-    //   deactivateToken.user.notificationSettings.telegramNotifications &&
-    //   deactivateToken.user.telegramId
-    // ) {
-    //   await this.telegramService.sendDeactivateToken(
-    //     deactivateToken.user.telegramId,
-    //     deactivateToken.token,
-    //     metadata,
-    //   );
-    // }
+    if (
+      deactivateToken.user.notificationSettings.telegramNotifications &&
+      deactivateToken.user.telegramId
+    ) {
+      await this.telegramService.sendDeactivateToken(
+        deactivateToken.user.telegramId,
+        deactivateToken.token,
+        metadata,
+      );
+    }
 
     return true;
   }

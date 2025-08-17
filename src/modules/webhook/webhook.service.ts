@@ -7,6 +7,7 @@ import { PrismaService } from '@/src/core/prisma/prisma.service';
 
 import { LivekitService } from '../libs/livekit/livekit.service';
 import { NotificationService } from '@/src/modules/notification/notification.service';
+import { TelegramService } from '@/src/modules/libs/telegram/telegram.service';
 
 @Injectable()
 export class WebhookService {
@@ -14,9 +15,9 @@ export class WebhookService {
     private readonly prismaService: PrismaService,
     private readonly configService: ConfigService,
     private readonly notificationService: NotificationService,
+    private readonly telegramService: TelegramService,
     private readonly livekitService: LivekitService, // private readonly stripeService: StripeService,
-  ) // private readonly telegramService: TelegramService,
-  {}
+  ) {}
 
   public async receiveWebhookLivekit(body: string, authorization: string) {
     const event = await this.livekitService.receiver.receive(
@@ -54,26 +55,26 @@ export class WebhookService {
         },
       });
 
-      // for (const follow of followers) {
-      //   const follower = follow.follower;
-      //
-      //   if (follower.notificationSettings.siteNotifications) {
-      //     await this.notificationService.createStreamStart(
-      //       follower.id,
-      //       stream.user,
-      //     );
-      //   }
-      //
-      //   if (
-      //     follower.notificationSettings.telegramNotifications &&
-      //     follower.telegramId
-      //   ) {
-      //     await this.telegramService.sendStreamStart(
-      //       follower.telegramId,
-      //       stream.user,
-      //     );
-      //   }
-      // }
+      for (const follow of followers) {
+        const follower = follow.follower;
+
+        if (follower.notificationSettings.siteNotifications) {
+          await this.notificationService.createStreamStart(
+            follower.id,
+            stream.user,
+          );
+        }
+
+        if (
+          follower.notificationSettings.telegramNotifications &&
+          follower.telegramId
+        ) {
+          await this.telegramService.sendStreamStart(
+            follower.telegramId,
+            stream.user,
+          );
+        }
+      }
     }
 
     if (event.event === 'ingress_ended') {
