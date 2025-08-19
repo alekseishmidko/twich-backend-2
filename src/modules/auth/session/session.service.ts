@@ -89,12 +89,12 @@ export class SessionService {
       throw new UnauthorizedException('Неверный пароль');
     }
 
-    // if (!user.isEmailVerified) {
-    //   await this.verificationService.sendVerificationToken(user);
-    //   throw new BadRequestException(
-    //     'Аккаунт не верифицирован, пожалуйста проверьте почту для подтверждения',
-    //   );
-    // }
+    if (!user.isEmailVerified) {
+      await this.verificationService.sendVerificationToken(user);
+      throw new BadRequestException(
+        'Аккаунт не верифицирован, пожалуйста проверьте почту для подтверждения',
+      );
+    }
     if (user.isTotpEnabled) {
       if (!pin) {
         return {
