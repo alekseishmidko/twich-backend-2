@@ -27,6 +27,11 @@ import { FollowModule } from '@/src/modules/follow/follow.module';
 import { ChannelModule } from '@/src/modules/channel/channel.module';
 import { NotificationModule } from '@/src/modules/notification/notification.module';
 import { TelegramModule } from '@/src/modules/libs/telegram/telegram.module';
+import { getStripeConfig } from '@/src/core/config/stripe.config';
+import { StripeModule } from '@/src/modules/libs/stripe/stripe.module';
+import { PlanModule } from '@/src/modules/sponsorship/plan/plan.module';
+import { SubscriptionModule } from '@/src/modules/sponsorship/subscription/subscription.module';
+import { TransactionModule } from '@/src/modules/sponsorship/transaction/transaction.module';
 
 @Module({
   imports: [
@@ -41,7 +46,11 @@ import { TelegramModule } from '@/src/modules/libs/telegram/telegram.module';
       useFactory: getGraphQLConfig, // используем фабрику для генерации конфигурации
       inject: [ConfigService], // передаём зависимости в useFactory
     }),
-
+    StripeModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: getStripeConfig,
+      inject: [ConfigService],
+    }),
     PrismaModule,
     RedisModule,
     CronModule,
@@ -55,11 +64,15 @@ import { TelegramModule } from '@/src/modules/libs/telegram/telegram.module';
     ChannelModule,
     NotificationModule,
     TelegramModule,
+    CoreModule,
     LivekitModule.registerAsync({
       imports: [ConfigModule],
       useFactory: getLiveKitConfig,
       inject: [ConfigService],
     }),
+    PlanModule,
+    SubscriptionModule,
+    TransactionModule,
     // auth
     AccountModule,
     SessionModule,

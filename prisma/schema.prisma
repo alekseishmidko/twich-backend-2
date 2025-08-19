@@ -40,8 +40,8 @@ model User {
 
   followers  Follow[] @relation(name: "followers")
   followings Follow[] @relation(name: "followings")
-  //
-  // transactions             Transaction[]
+
+  transactions             Transaction[]
   sponsorshipPlans         SponsorshipPlan[]
   sponsorshipSubscriptions SponsorshipSubscription[] @relation(name: "sponsorship_subscriptions")
   sponsors                 SponsorshipSubscription[] @relation(name: "sponsors")
@@ -252,4 +252,31 @@ model SponsorshipSubscription {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("sponsorship_subscriptions")
+}
+
+model Transaction {
+  id String @id @default(uuid())
+
+  amount   Float
+  currency String
+
+  stripeSubscriptionId String?           @map("stripe_subscription_id")
+  status               TransactionStatus @default(PENDING)
+
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String? @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("transactions")
+}
+
+enum TransactionStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  EXPIRED
+
+  @@map("transaction_statuses")
 }

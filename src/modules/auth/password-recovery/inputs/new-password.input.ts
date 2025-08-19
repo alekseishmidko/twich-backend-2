@@ -7,7 +7,7 @@ import {
   Validate,
 } from 'class-validator';
 
-// import { IsPasswordsMatchingConstraint } from '@/src/shared/decorators/is-passwords-matching-constraint.decorator';
+import { IsPasswordsMatchingConstraint } from '@/src/shared/decorators/is-passwords-matching-constraint.decorator';
 
 @InputType()
 export class NewPasswordInput {
@@ -21,7 +21,7 @@ export class NewPasswordInput {
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
-  // @Validate(IsPasswordsMatchingConstraint)
+  @Validate(IsPasswordsMatchingConstraint)
   public passwordRepeat: string;
 
   @Field(() => String)
